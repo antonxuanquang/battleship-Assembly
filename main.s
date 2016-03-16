@@ -54,7 +54,7 @@ fmt_string:	.string "%s"
 fmt_charint:	.string "%c%d"
 fmt_charvalue:	.string "Value is %c\n"
 fmt_intvalue: 	.string "Value is %d\n"
-fmt_strvalue:	.string "Value is %s"
+fmt_strvalue:	.string "Value is %s\n"
 
 
 
