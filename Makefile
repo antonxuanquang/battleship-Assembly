@@ -34,6 +34,7 @@ BACKUPS = *~
 #Main Executable
 $(EXE): $(OBJS)
 	$(CC) $(LFLAGS) -o $@ $(OBJS)
+	$(RM) $(RMFLAGS) *.o
 
 # Assemble any .s files ino the object file
 .s.o: 
