@@ -1,42 +1,55 @@
-#MACROS
-DEBUG = -g
-CC = gcc
+################################
+#
+# Makefile: Project 3: Battleship
+#
+####################################
+
+################
+#
+# Macros
+#
+##############
+DEBUG= -g
+CC= gcc
 CFLAGS = $(DEBUG)
 
-AS = as
+AS = as #note: this is already defined: see 'make -p'
 ASFLAGS = $(DEBUG)
 
-LFLAGS = $(DEBUG)
+LFLAGS= $(DEBUG)
 
 RM = /bin/rm
-RMFLAGS = -f
-
-OBJS = 	main.s
-
-EXE = battleship
+RMFLAGS= -f
+OBJS = main.o mess.o
+#	clearscreen.s
+EXE= battleship
 BACKUPS = *~
 
-#Rules
+
+###############################
+#
+# Rules
+#
+############################
+#Main Executable
 $(EXE): $(OBJS)
-		$(CC) $(LFLAGS) -o $@ $(OBJS)
+	$(CC) $(LFLAGS) -o $@ $(OBJS)
 
-# Assemble any .s file into the object file
-.s.o:
-		$(AS) $(ASFLAGS) -o $@ $<
+# Assemble any .s files ino the object file
+.s.o: 
+	$(AS) $(ASFLAGS) -o $@ $<
 
-zipfile:
-		mkdir $(USER)
-		cp *.s Makefile README $(USER)
-		zip -r $(USER) $(USER)
+#Create zip file for dropbox submission
+zipfile: 
+	mkdir $$USER
+	cp *.s Makefile README $$USER
+	zip -r $$USER $$USER
 
+#Clean project
 clean: 
-		$(RM) $(RMFLAGS) $(OBJS) $(EXE)
+	$(RM) $(RMFLAGS) $(OBJS) $(EXE)
 
+#Clean and remove backups
 distclean:
-		$(RM) $(RMFLAGS) $(OBJS) $(EXE) $(BACKUPS)
-
-# make --> create entire new project
-# make make.o --> create make.o from make.s
-# make clean --> call clean target in Makefile
-# make zipfile --> build zipfile
-# make -n --> display all commands are going to execute, but would not execute them
+	$(RM) $(RMFLAGS) $(OBJS) $(EXE) $(BACKUPS)
+ 
