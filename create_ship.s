@@ -178,7 +178,7 @@ get_positions:
 	cmpl	$0, -60(%rbp)
 	jne		get_positions2
 	movl	$msg_Input, %esi
-	movl	$.LC9, %edi
+	movl	$msg_Input, %edi
 	movl	$0, %eax
 	call	printf
 

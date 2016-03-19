@@ -20,8 +20,10 @@ LFLAGS= $(DEBUG)
 
 RM = /bin/rm
 RMFLAGS= -f
-OBJS = main.o mess.o
-#	clearscreen.s
+OBJS =	main.o \
+	create_ship.o \
+	get_coordinate.o
+
 EXE= battleship
 BACKUPS = *~
 
