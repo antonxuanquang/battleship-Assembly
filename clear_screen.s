@@ -6,6 +6,8 @@
 	.section	.rodata
 msg_1:
 	.string	"Press [[ENTER]] to continue\n"
+msg_2:
+	.string "clear"
 
 ###############################################
 #
@@ -36,7 +38,11 @@ clear_screen:
 	movl	$msg_1, %edi
 	call 	puts
 
+	movl	$msg_2, %edi
+	
 	call getchar
+	
+	call system
 
 	popq %rbp
 	ret
