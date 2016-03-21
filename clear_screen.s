@@ -38,10 +38,9 @@ clear_screen:
 	movl	$msg_1, %edi
 	call 	puts
 
-	movl	$msg_2, %edi
-	
 	call getchar
 	
+	movq	$msg_2, %rdi
 	call system
 
 	popq %rbp
