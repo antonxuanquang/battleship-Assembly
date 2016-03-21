@@ -22,7 +22,11 @@ RM = /bin/rm
 RMFLAGS= -f
 OBJS =	main.o \
 	create_ship.o \
-	get_coordinate.o
+	get_coordinate.o \
+	generate_possible_positions.o \
+	get_end_coordinate.o \
+	put_ship_on_board.o \
+	clear_screen.o
 
 EXE= battleship
 BACKUPS = *~

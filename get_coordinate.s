@@ -13,6 +13,8 @@ msg_3:
 	.string	"and a number from 0 to 9"
 msg_4:
 	.string	"Example: B2, J3, G7"
+msg_s:
+	.string "%s"
 
 
 ###############################################
@@ -69,7 +71,7 @@ validate_input:
 #	do {
 #		scanf("%s", input);
 	leaq	-32(%rbp), %rsi
-	movl	$.LC9, %edi
+	movl	$msg_s, %edi
 	movl	$0, %eax
 	call	__isoc99_scanf
 	leaq	-32(%rbp), %rax

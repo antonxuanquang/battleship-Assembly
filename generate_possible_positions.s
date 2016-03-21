@@ -13,8 +13,8 @@
 #
 ###############################################
 	.text
-	.globl 	generate_possible_possitions
-	.type	generate_possible_possitions, @function
+	.globl 	generate_possible_positions
+	.type	generate_possible_positions, @function
 
 
 ##############################################
@@ -23,7 +23,7 @@
 #
 ##############################################
 
-generate_possible_possitions:
+generate_possible_positions:
 	pushq	%rbp
 	movq	%rsp, %rbp
 
