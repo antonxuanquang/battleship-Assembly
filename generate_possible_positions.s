@@ -13,7 +13,8 @@
 #
 ###############################################
 	.text
-	.globl generate_possible_possitions
+	.globl 	generate_possible_possitions
+	.type	generate_possible_possitions, @function
 
 
 ##############################################
@@ -354,5 +355,6 @@ gpp_end:
 
 	leave
 	ret
+
 
 #############################################
