@@ -6,6 +6,17 @@
 	.section	.rodata
 msg_cannot_put:
 	.string	"Can't put this ship on board, please try again!"
+msg_retry:
+	.string	">0: Retry"
+msg_option_counter:
+	.string	">%d: %s\n"
+msg_prompt_end:
+	.string	"Please input end position: "
+msg_s:
+	.string	"%s"
+msg_d:
+	.string	"%d"
+
 
 ###############################################
 #
@@ -108,7 +119,7 @@ get_end_cord:
 	movzbl	(%rax), %edx
 	movq	-32(%rbp), %rax
 	movb	%dl, (%rax)			# end_position[0]
-	
+
 # 	end_position[1] = possible_positions[(option - 1) * 2 + 1];
 	movq	-32(%rbp), %rax 	
 	leaq	1(%rax), %rdx		# end_position[1]
