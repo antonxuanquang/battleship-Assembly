@@ -4,18 +4,15 @@
 #
 ######################################
 	.section	.rodata
-.LC0:
+msg_clear:
 	.string	"clear"
-	.align 8
-.LC1:
+msg_star:
 	.string	"*******************************"
-	.align 8
-.LC2:
+msg_space:
 	.string	"*                             *"
-	.align 8
-.LC3:
+msg_welcome:
 	.string	"* Welcome to battle ship game.*"
-.LC4:
+msg_new_line:
 	.string	"\n"
 
 ###############################################
@@ -27,33 +24,27 @@
 	.globl	begin
 	.type	begin, @function
 begin:
-.LFB2:
-	.cfi_startproc
 	pushq	%rbp
-	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
 	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
-	movl	$.LC0, %edi
+
+	movq	$msg_clear, %rdi
 	call	system
-	movl	$.LC1, %edi
+	movq	$msg_star, %rdi
 	call	puts
-	movl	$.LC2, %edi
+	movq	$msg_space, %rdi
 	call	puts
-	movl	$.LC3, %edi
+	movq	$msg_welcome, %rdi
 	call	puts
-	movl	$.LC2, %edi
+	movq	$msg_space, %rdi
 	call	puts
-	movl	$.LC1, %edi
+	movq	$msg_star, %rdi
 	call	puts
-	movl	$.LC4, %edi
+	movq	$msg_new_line, %rdi
 	call	puts
-	movl	$0, %eax
+
+	movq	$0, %rax
 	call	clear_screen
+
 	popq	%rbp
-	.cfi_def_cfa 7, 8
 	ret
-	.cfi_endproc
-.LFE2:
-	.size	begin, .-begin
 #############################################
