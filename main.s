@@ -8,18 +8,6 @@
 #
 #########################################
 
-#########################################
-#
-# Equate Section
-#
-#
-########################################
-.equ SPACE, 0x20      # character ' '
-.equ DOT,   0x2E      # character '.'
-.equ HIT,   0x58      # character 'X'
-.equ MISS,  0x5F      # character 'o'
-.equ NULL, 0x88       # charactr '\0' (NULL)
-
 
 
 ######################################
@@ -29,43 +17,29 @@
 ######################################
 	.section	.rodata
 
-##  constant single characters
-const_y:	.string "y"
-const_n:	.string "n"
-const_Y:	.string "Y"
-const_N:	.string "N"
-
-## Messages
-msg_instructions:
-	.ascii "These\n"
-	.ascii "are\n"
-	.ascii "the\n"
-	.ascii "instructions\n"
-	.ascii "\n"
-msg_pressenter: .string "Press[ENTER] to continue..."
-
-## Command Strings
-cmd_clear: .string "clear"
-
-## Format strings used by scanf() and printf()
-fmt_char:	.string "%c"
-fmt_int:	.string "%d"
-fmt_string:	.string "%s"
-fmt_charint:	.string "%c%d"
-fmt_charvalue:	.string "Value is %c\n"
-fmt_intvalue: 	.string "Value is %d\n"
-fmt_strvalue:	.string "Value is %s\n"
+.section	.rodata
+msg_begin:
+	.string	"Let's create some ships\n\n"
+msg_battle_begin:
+	.string	"The battle begin\n\n"
+msg_computer_shoot:
+	.string	"Computer shoot you at: "
+msg_you_shoot:
+	.string	"You shoot at: "
+msg_computer_coordinate:
+	.string	"%s...\n\n%s"
+msg_you_coordinate:
+	.string	"\n%s"
+msg_you_won:
+	.string	"Congratulations!!!! You won"
+msg_computer_won:
+	.string	"Computer won"
+msg_your_board:
+	.string	"Your game board"
+msg_computer_board:
+	.string	"Computer's game board"
 
 
-
-################################################
-#
-# Data Section
-#
-###############################################
-	.section .data
-foo:
-	.int 12
 
 ###############################################
 #
@@ -73,10 +47,8 @@ foo:
 #
 ###############################################
 .bss
-	.lcomm buffer, 256	#used to store answer for y/n question
-	.lcomm shipboard, 100 	#data structure for ship board
-	.lcomm shotboard, 100	#data structure for shot board
-	.lcomm turn, 4		#which "turn" is it? Player=0 computer=1
+	.lcomm player_board, 100 	#data structure for player_board
+	.lcomm computer_board, 100	#data structure for computer_board
 
 
 
@@ -86,28 +58,176 @@ foo:
 #
 ###############################################
 	.text
-	.globl main
-
-
-##############################################
-#
-# Start Function (P55)
-#
-##############################################
-
+	.globl	main
+	.type	main, @function
 main:
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$16, %rsp
 
-	## clear screen and dispaly game instructions
-##	call clear_screen
-##	call disp_inst
+	movl	$0, -4(%rbp)
+	movl	$0, -8(%rbp)
 
-#	call press_enter
+# 	begin();
+	call	begin
 
-#	call disp_board
 
-	call mess
+# 	char* shoot = malloc(2);
+	movl	$2, %edi
+	call	malloc
+	movq	%rax, -16(%rbp)		# shoot
 
-	movl $1, %eax # exit(0)
-	movl $0, %ebx
-	int  $0x80
-#############################################
+# 	printf("Let's create some ships\n\n\n");
+	movl	$msg_begin, %edi
+	call	puts
+
+# 	create_board(player_board);
+	movq	$player_board, %rdi
+	call	create_board
+# 	create_board(computer_board);
+	movq 	$computer_board, %rdi
+	call	create_board
+
+# 	create_ship(player_board, computer_turn);
+	movl	-4(%rbp), %esi
+	movq	$player_board, %rdi
+	call	create_ship
+
+# 	create_ship(computer_board, !computer_turn);
+	# !computer_turn
+	cmpl	$0, -4(%rbp)
+	sete	%al
+	movzbl	%al, %edx
+	movl	%edx, %esi
+
+	movq 	$computer_board, %rdi
+	call	create_ship
+
+# 	printf("The battle begin\n\n\n");
+	movl	$msg_battle_begin, %edi
+	call	puts
+
+main_loop:
+
+# 	show_board(player_board, computer_board);
+	movq 	$computer_board, %rsi
+	movq	$player_board, %rdi
+	call	show_board
+
+# 	if (computer_turn) 	printf("Computer shoot you at: ");
+	cmpl	$0, -4(%rbp)
+	je		main_you_shoot
+
+	# printf("Computer shoot you at: ");
+	movl	$msg_computer_shoot, %edi
+	movl	$0, %eax
+	call	printf
+	jmp		main_get_cooridate
+
+# 	else 				printf("You shoot at: ");
+main_you_shoot:
+	movl	$msg_you_shoot, %edi
+	movl	$0, %eax
+	call	printf
+
+main_get_cooridate:
+# 	get_coordinate(shoot, 2, computer_turn);
+	movl	-4(%rbp), %edx
+	movq	-16(%rbp), %rdi
+	movl	$2, %esi
+	call	get_coordinate
+
+# 	if (computer_turn) 	printf("%s...\n\n%s", shoot, shoot);
+	cmpl	$0, -4(%rbp)
+	je		main_prompt_after_shoot
+
+	# printf("%s...\n\n%s", shoot, shoot);
+	movq	-16(%rbp), %rdx
+	movq	-16(%rbp), %rsi
+	movl	$msg_computer_coordinate, %edi
+	movl	$0, %eax
+	call	printf
+	jmp		main_check_sink
+
+main_prompt_after_shoot:
+	movq	-16(%rbp), %rsi
+	movl	$msg_you_coordinate, %edi
+	movl	$0, %eax
+	call	printf
+
+
+main_check_sink:
+# 	if (computer_turn) {
+	cmpl	$0, -4(%rbp)
+	je		main_shoot_computer_board
+
+# 	sink = shoot_a_board(shoot, player_board);	
+	movq	$player_board, %rsi
+	movq	-16(%rbp), %rdi
+	call	shoot_a_board
+	movl	%eax, -8(%rbp) 			# sink
+	jmp	main_loop_end
+
+# 	sink = shoot_a_board(shoot, computer_board);
+main_shoot_computer_board:
+	movq 	$computer_board, %rsi
+	movq	-16(%rbp), %rdi
+	call	shoot_a_board
+	movl	%eax, -8(%rbp) 			# sink
+
+main_loop_end:
+# 	computer_turn = !computer_turn;
+	cmpl	$0, -4(%rbp)
+	sete	%al
+	movzbl	%al, %eax
+	movl	%eax, -4(%rbp)
+
+
+	call	clear_screen
+
+# 	} while (!sink);
+	cmpl	$0, -8(%rbp)
+	je		main_loop
+
+# 	if (computer_turn) 		printf("%s\n", "Congratulations!!!! You won");
+	cmpl	$0, -4(%rbp)
+	je		main_computer_won
+	# printf("%s\n", "Congratulations!!!! You won");
+	movl	$msg_you_won, %edi
+	call	puts
+	jmp		main_end
+
+main_computer_won:
+# 	else 					printf("%s\n", "Computer won");
+	movl	$msg_computer_won, %edi
+	call	puts
+
+
+main_end:
+# 	printf("Your game board\n");
+	movl	$msg_your_board, %edi
+	call	puts
+
+# 	show_board(player_board, computer_board);
+	movq 	$computer_board, %rsi
+	movq	$player_board, %rdi
+	call	show_board
+
+# 	printf("Computer's game board\n");
+	movl	$msg_computer_board, %edi
+	call	puts
+
+# 	show_board(computer_board, player_board);
+	movq	$player_board, %rsi
+	movq 	$computer_board, %rdi
+	call	show_board
+
+# 	free(shoot);
+	movq	-16(%rbp), %rdi
+	call	free
+
+# 	return (EXIT_SUCCESS);	
+	movl	$0, %eax
+
+	leave
+	ret
