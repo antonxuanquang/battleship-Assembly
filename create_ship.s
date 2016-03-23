@@ -17,6 +17,8 @@ msg_Destroyer:
 	.string	"You are creating a Destroyer\n"
 msg_Input:
 	.string	"Please input a start coordinate: "
+msg_s:
+	.string "%s"
 
 
 ###############################################
@@ -83,7 +85,7 @@ showboard:
 	jne	letter
 	movq	-56(%rbp), %rsi
 	movq	-56(%rbp), %rdi
-	#call	show_board
+	call	show_board
 
 letter:
 #	letter = type[i];
@@ -178,16 +180,15 @@ get_positions:
 	cmpl	$0, -60(%rbp)
 	jne		get_positions2
 	movl	$msg_Input, %esi
-	movl	$msg_Input, %edi
+	movl	$msg_s, %edi
 	movl	$0, %eax
 	call	printf
 
 get_positions2:
 #	get_coordinate(start_position, 2, computer_turn);
 	movl	-60(%rbp), %edx
-	movq	-16(%rbp), %rax
+	movq	-16(%rbp), %rdi
 	movl	$2, %esi
-	movq	%rax, %rdi
 	call	get_coordinate
 
 #	generate_possible_positions(
@@ -207,6 +208,7 @@ get_positions2:
 
 #	while (end_position[0] == '\0');
 	movq	-32(%rbp), %rax
+	movzbl	(%rax), %eax
 	testb	%al, %al
 	je		get_positions
 
@@ -247,7 +249,7 @@ loop:
 	call	free
 
 
-    popq    %rbp
+    leave
     ret
 
 #############################################

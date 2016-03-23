@@ -21,11 +21,17 @@ LFLAGS= $(DEBUG)
 RM = /bin/rm
 RMFLAGS= -f
 OBJS =	main.o \
+	begin.o \
+	create_board.o \
 	create_ship.o \
+	show_board2.o \
 	get_coordinate.o \
 	generate_possible_positions.o \
 	get_end_coordinate.o \
 	put_ship_on_board.o \
+	upper_case.o \
+	lower_case.o \
+	shoot_a_board.o \
 	clear_screen.o
 
 EXE= battleship

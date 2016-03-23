@@ -47,7 +47,7 @@ user_turn:
 	call	prompt_for_coordinate
 
 end:
-	popq	%rbp
+	leave
 	ret
 
 ##############################################
@@ -70,7 +70,8 @@ validate_input:
 #	char input[20];
 #	do {
 #		scanf("%s", input);
-	leaq	-32(%rbp), %rsi
+	leaq	-32(%rbp), %rax
+	movq	%rax, %rsi
 	movl	$msg_s, %edi
 	movl	$0, %eax
 	call	__isoc99_scanf
@@ -82,12 +83,17 @@ validate_input:
 	je		validate_input
 
 #	strncpy(result, input, size);
-	leaq	-32(%rbp), %rsi
-	movq	-40(%rbp), %rdi
-	movl	-44(%rbp), %edx
+	movl	-44(%rbp), %eax
+	movslq	%eax, %rdx
+	leaq	-32(%rbp), %rcx
+	movq	-40(%rbp), %rax
+	movq	%rcx, %rsi
+	movq	%rax, %rdi
 	call	strncpy
 
-	popq	%rbp
+	addq 	$48, %rsp
+	movq	%rbp, %rsp
+	popq 	%rbp
 	ret
 
 #############################################

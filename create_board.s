@@ -7,6 +7,16 @@
 .equ DOT,   0x2E      # character '.'
 
 
+######################################
+#
+# READ ONLY SECTION
+#
+######################################
+	.section	.rodata
+test:
+	.string	"hehehe\n"
+
+
 ###############################################
 #
 # Text (Code) Segment
@@ -32,6 +42,8 @@ create_board:
 	pushq	%rbp
 	movq	%rsp, %rbp
 
+
+
 	movq 	$0, %r12	#counter= 0
 
 loop:
@@ -42,5 +54,7 @@ loop:
 	incq	%r12
 	jmp	loop
 
-done:	popq 	%rbp
+done:	
+
+	leave
 	ret
