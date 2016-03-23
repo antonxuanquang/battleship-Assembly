@@ -38,7 +38,7 @@ loop:
 	cmp	$99, %r12
 	jg	done
 
-#	movq 	$DOT, (%rdi, %r12, 1)
+	movq 	$DOT, (%rdi, %r12, 1)
 	incq	%r12
 	jmp	loop
 
