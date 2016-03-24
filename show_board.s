@@ -208,7 +208,7 @@ loop:
 else:
 	movq	%rcx, %rdi
 	call	lower_case
-	cmp	$0, $rax
+	cmp	$0, %rax
 	jne	else2
 	cmp	$MISS, %rcx
 	je	else2
