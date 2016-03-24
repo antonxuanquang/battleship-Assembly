@@ -57,17 +57,17 @@ create_ship:
 	movb	$68, -44(%rbp)			
 
 #	char *start_position = (char*)malloc(2);
-	movl	$2, %edi				
+	movq	$2, %rdi				
 	call	malloc
 	movq	%rax, -16(%rbp)
 
 #	char *possible_positions = (char*)malloc(8);
-	movl	$8, %edi
+	movq	$8, %rdi
 	call	malloc
 	movq	%rax, -24(%rbp)
 
 #	char *end_position = (char*)malloc(2);
-	movl	$2, %edi
+	movq	$2, %rdi
 	call	malloc
 	movq	%rax, -32(%rbp)
 
@@ -101,19 +101,19 @@ letter:
 
 
 #	case 'A': length = 5; if (!computer_turn) printf("You are creating an Aircraft Carrier\n\n"); 	break;
-	cmp		$65, %eax
+	cmp		$65, %rax
 	je		caseA
 #	case 'B': length = 4; if (!computer_turn) printf("You are creating a Battleship\n\n"); 			break;
-	cmp		$66, %eax
+	cmp		$66, %rax
 	je		caseB	
 #	case 'C': length = 3; if (!computer_turn) printf("You are creating a Cruiser\n\n"); 			break;
-	cmp		$67, %eax
+	cmp		$67, %rax
 	je		caseC	
 #	case 'S': length = 2; if (!computer_turn) printf("You are creating a Submarine\n\n"); 			break;
-	cmp		$83, %eax
+	cmp		$83, %rax
 	je		caseS	
 #	case 'D': length = 2; if (!computer_turn) printf("You are creating a Destroyer\n\n"); 			break;
-	cmp		$68, %eax
+	cmp		$68, %rax
 	je		caseD
 
 #	length = 5; if (!computer_turn) printf("You are creating an Aircraft Carrier\n\n"); 	break;
@@ -121,7 +121,7 @@ caseA:
 	movl	$5, -8(%rbp)
 	cmpl	$0, -60(%rbp)
 	jne	get_positions
-	movl	$msg_Aircaft, %edi
+	movq	$msg_Aircaft, %rdi
 	call	puts
 	jmp		get_positions
 
@@ -130,7 +130,7 @@ caseB:
 	movl	$4, -8(%rbp)
 	cmpl	$0, -60(%rbp)
 	jne	get_positions
-	movl	$msg_Battleship, %edi
+	movq	$msg_Battleship, %rdi
 	call	puts
 	jmp		get_positions
 
@@ -139,7 +139,7 @@ caseC:
 	movl	$3, -8(%rbp)
 	cmpl	$0, -60(%rbp)
 	jne	get_positions
-	movl	$msg_Cruiser, %edi
+	movq	$msg_Cruiser, %rdi
 	call	puts
 	jmp		get_positions
 
@@ -148,7 +148,7 @@ caseS:
 	movl	$2, -8(%rbp)
 	cmpl	$0, -60(%rbp)
 	jne	get_positions
-	movl	$msg_Submarine, %edi
+	movq	$msg_Submarine, %rdi
 	call	puts
 	jmp		get_positions
 
@@ -157,38 +157,38 @@ caseD:
 	movl	$2, -8(%rbp)
 	cmpl	$0, -60(%rbp)
 	jne	get_positions
-	movl	$msg_Destroyer, %edi
+	movq	$msg_Destroyer, %rdi
 	call	puts
 	jmp		get_positions
 
 get_positions:
 #	memset(possible_positions,'\0', 8);
 	movq	-24(%rbp), %rax
-	movl	$8, %edx
-	movl	$0, %esi
+	movq	$8, %rdx
+	movq	$0, %rsi
 	movq	%rax, %rdi
 	call	memset
 
 #	memset(end_position, '\0', 2);
 	movq	-32(%rbp), %rax
-	movl	$2, %edx
-	movl	$0, %esi
+	movq	$2, %rdx
+	movq	$0, %rsi
 	movq	%rax, %rdi
 	call	memset
 
 #	if (!computer_turn) printf("%s", "Please input a start coordinate: ");
 	cmpl	$0, -60(%rbp)
 	jne		get_positions2
-	movl	$msg_Input, %esi
-	movl	$msg_s, %edi
-	movl	$0, %eax
+	movq	$msg_Input, %rsi
+	movq	$msg_s, %rdi
+	movq	$0, %rax
 	call	printf
 
 get_positions2:
 #	get_coordinate(start_position, 2, computer_turn);
 	movl	-60(%rbp), %edx
 	movq	-16(%rbp), %rdi
-	movl	$2, %esi
+	movq	$2, %rsi
 	call	get_coordinate
 
 #	generate_possible_positions(
@@ -222,7 +222,7 @@ get_positions2:
 #	if (!computer_turn) clear_screen();
 	cmpl	$0, -60(%rbp)
 	jne		inc
-	movl	$0, %eax
+	movq	$0, %rax
 	call	clear_screen
 
 inc:

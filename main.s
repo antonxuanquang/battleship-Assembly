@@ -73,12 +73,12 @@ main:
 
 
 # 	char* shoot = malloc(2);
-	movl	$2, %edi
+	movq	$2, %rdi
 	call	malloc
 	movq	%rax, -16(%rbp)		# shoot
 
 # 	printf("Let's create some ships\n\n\n");
-	movl	$msg_begin, %edi
+	movq	$msg_begin, %rdi
 	call	puts
 
 # 	create_board(player_board);
@@ -104,7 +104,7 @@ main:
 	call	create_ship
 
 # 	printf("The battle begin\n\n\n");
-	movl	$msg_battle_begin, %edi
+	movq	$msg_battle_begin, %rdi
 	call	puts
 
 main_loop:
@@ -119,22 +119,22 @@ main_loop:
 	je		main_you_shoot
 
 	# printf("Computer shoot you at: ");
-	movl	$msg_computer_shoot, %edi
-	movl	$0, %eax
+	movq	$msg_computer_shoot, %rdi
+	movq	$0, %rax
 	call	printf
 	jmp		main_get_cooridate
 
 # 	else 				printf("You shoot at: ");
 main_you_shoot:
-	movl	$msg_you_shoot, %edi
-	movl	$0, %eax
+	movq	$msg_you_shoot, %rdi
+	movq	$0, %rax
 	call	printf
 
 main_get_cooridate:
 # 	get_coordinate(shoot, 2, computer_turn);
 	movl	-4(%rbp), %edx
 	movq	-16(%rbp), %rdi
-	movl	$2, %esi
+	movq	$2, %rsi
 	call	get_coordinate
 
 # 	if (computer_turn) 	printf("%s...\n\n%s", shoot, shoot);
@@ -144,15 +144,15 @@ main_get_cooridate:
 	# printf("%s...\n\n%s", shoot, shoot);
 	movq	-16(%rbp), %rdx
 	movq	-16(%rbp), %rsi
-	movl	$msg_computer_coordinate, %edi
-	movl	$0, %eax
+	movq	$msg_computer_coordinate, %rdi
+	movq	$0, %rax
 	call	printf
 	jmp		main_check_sink
 
 main_prompt_after_shoot:
 	movq	-16(%rbp), %rsi
-	movl	$msg_you_coordinate, %edi
-	movl	$0, %eax
+	movq	$msg_you_coordinate, %rdi
+	movq	$0, %rax
 	call	printf
 
 
@@ -182,7 +182,7 @@ main_loop_end:
 	movzbl	%al, %eax
 	movl	%eax, -4(%rbp)
 
-
+	movq	$0, %rax
 	call	clear_screen
 
 # 	} while (!sink);
@@ -193,19 +193,19 @@ main_loop_end:
 	cmpl	$0, -4(%rbp)
 	je		main_computer_won
 	# printf("%s\n", "Congratulations!!!! You won");
-	movl	$msg_you_won, %edi
+	movq	$msg_you_won, %rdi
 	call	puts
 	jmp		main_end
 
 main_computer_won:
 # 	else 					printf("%s\n", "Computer won");
-	movl	$msg_computer_won, %edi
+	movq	$msg_computer_won, %rdi
 	call	puts
 
 
 main_end:
 # 	printf("Your game board\n");
-	movl	$msg_your_board, %edi
+	movq	$msg_your_board, %rdi
 	call	puts
 
 # 	show_board(player_board, computer_board);
@@ -214,7 +214,7 @@ main_end:
 	call	show_board
 
 # 	printf("Computer's game board\n");
-	movl	$msg_computer_board, %edi
+	movq	$msg_computer_board, %rdi
 	call	puts
 
 # 	show_board(computer_board, player_board);
@@ -227,7 +227,8 @@ main_end:
 	call	free
 
 # 	return (EXIT_SUCCESS);	
-	movl	$0, %eax
+	movq	$0, %rax
+
 
 	leave
 	ret

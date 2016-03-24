@@ -12,7 +12,7 @@ lower_case:
 	movq	%rsp, %rbp
 
 	# save character
-	movl	%edi, %eax
+	movq	%rdi, %rax
 	movb	%al, -20(%rbp)
 
 	# range
@@ -29,11 +29,11 @@ lower_case:
 	jg		lc_false
 
 	# return false
-	movl	$1, %eax
+	movq	$1, %rax
 	jmp		lc_true
 lc_false:
 	# return true
-	movl	$0, %eax
+	movq	$0, %rax
 lc_true:
 	popq	%rbp
 	ret

@@ -73,7 +73,7 @@ validate_input:
 	leaq	-32(%rbp), %rax
 	movq	%rax, %rsi
 	movl	$msg_s, %edi
-	movl	$0, %eax
+	movq	$0, %rax
 	call	__isoc99_scanf
 	leaq	-32(%rbp), %rax
 #	} while (!is_valid(input));
@@ -150,24 +150,24 @@ is_valid:
 	jg		invalid_input
 
 #	return true;
-	movl	$1, %eax
+	movq	$1, %rax
 	jmp		end_is_valid
 
 invalid_input:
 #	printf("Invalid input!!!!\n");
-	movl	$msg_1, %edi
+	movq	$msg_1, %rdi
 	call	puts
 #	printf("A valid cordinate consists of a capital character from A to J\n");
-	movl	$msg_2, %edi
+	movq	$msg_2, %rdi
 	call	puts
 #	printf("and a number from 0 to 9\n");
-	movl	$msg_3, %edi
+	movq	$msg_3, %rdi
 	call	puts
 #	printf("Example: B2, J3, G7\n");
-	movl	$msg_4, %edi
+	movq	$msg_4, %rdi
 	call	puts
 #	return false;
-	movl	$0, %eax
+	movq	$0, %rax
 
 end_is_valid:
 	leave
@@ -212,28 +212,6 @@ generate_random_input:
 
 	leave	
 	ret
-
-#Boolean is_valid(char *input) {
-#	if (strlen(input) == 2) {
-#		int first = (int)input[0] - (int)'A';
-#		int second = (int)input[1] - (int)'0';
-#		if (first >= 0 && first < 10 && second >= 0 && second < 10) {
-#			return true;
-#		}
-#	}
-#	printf("Invalid input!!!!\n");
-#	printf("A valid cordinate consists of a capital character from A to J\n");
-#	printf("and a number from 0 to 9\n");
-#	printf("Example: B2, J3, G7\n");
-#	return false;
-#}
-
-#void generate_random_input(char *result, int size) {
-#	char input[2];
-#	input[0] = (char) ((int)'A' + rand()%10);
-#	input[1] = (char) ((int)'0' + rand()%10);
-#	strncpy(result, input, size);
-#}
 
 
 

@@ -4,11 +4,11 @@
 #
 ######################################
 	.section	.rodata
-.LC21:
+msg_HIT:
 	.string	" is a HIT"
-.LC22:
+msg_already_HIT:
 	.string	", hmmmm...., it has already  been hit :("
-.LC23:
+msg_MISS:
 	.string	" is a MISS"
 
 
@@ -100,10 +100,10 @@ shoot_it:
 	movb 	%al, (%rcx, %rdx)
 
 # 	printf("%s\n", " is a HIT");
-	movl	$.LC21, %edi
+	movq	$msg_HIT, %rdi
 	call	puts
 # 	return true;
-	movl	$1, %eax
+	movq	$1, %rax
 	jmp	si_return
 
 
@@ -114,7 +114,7 @@ si_else_if:
 	testl	%eax, %eax
 	je	si_else
 # 	printf("%s\n", ", hmmmm...., it has already  been hit :(");
-	movl	$.LC22, %edi
+	movq	$msg_already_HIT, %rdi
 	call	puts
 	jmp	si_false
 
@@ -130,12 +130,12 @@ si_else:
 	movb	$111, (%rdx,%rcx)
 
 # 	printf("%s\n", " is a MISS");
-	movl	$.LC23, %edi
+	movq	$msg_MISS, %rdi
 	call	puts
 
 # 	return false;
 si_false:
-	movl	$0, %eax
+	movq	$0, %rax
 
 si_return:
 	leave
@@ -150,8 +150,8 @@ check_sink:
 
 # 	memset(sum_string, '\0', 20);
 	leaq	-48(%rbp), %rdi
-	movl	$20, %edx
-	movl	$0, %esi
+	movq	$20, %rdx
+	movq	$0, %rsi
 	call	memset
 
 # 	for (row = 0; row < 10; row++) {

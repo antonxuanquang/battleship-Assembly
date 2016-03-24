@@ -1,12 +1,3 @@
-######################################
-#
-# READ ONLY SECTION
-#
-######################################
-	.section	.rodata
-
-
-
 ###############################################
 #
 # Text (Code) Segment
@@ -15,13 +6,6 @@
 	.text
 	.globl 	generate_possible_positions
 	.type	generate_possible_positions, @function
-
-
-##############################################
-#
-# Start Function (P55)
-#
-##############################################
 
 generate_possible_positions:
 	pushq	%rbp
@@ -35,7 +19,7 @@ generate_possible_positions:
 	movq	%rcx, -64(%rbp)			#board
 
 # 	char *new_coordinate = (char*)malloc(2);
-	movl	$2, %edi
+	movq	$2, %rdi
 	call	malloc
 	movq	%rax, -16(%rbp)			#new_coordinate
 

@@ -1,11 +1,3 @@
-######################################
-#
-# READ ONLY SECTION
-#
-######################################
-	.section	.rodata
-	
-
 ###############################################
 #
 # Text (Code) Segment
@@ -22,7 +14,7 @@ put_ship_on_board:
 
 	movq	%rdi, -40(%rbp) 	# start_position
 	movq	%rsi, -48(%rbp) 	# end_position
-	movl	%edx, %eax
+	movq	%rdx, %rax
 	movb	%al, -52(%rbp) 		# letter
 	movq	%rcx, -64(%rbp) 	# board
 

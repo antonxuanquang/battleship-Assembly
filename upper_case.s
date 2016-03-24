@@ -12,7 +12,7 @@ upper_case:
 	movq	%rsp, %rbp
 
 	# save character
-	movl	%edi, %eax
+	movq	%rdi, %rax
 	movb	%al, -20(%rbp)
 
 	# range
@@ -24,16 +24,16 @@ upper_case:
 
 	# within the range
 	movsbl	-20(%rbp), %eax
-	subl	$65, %eax
+	subq	$65, %rax
 	cmpl	-4(%rbp), %eax
 	jg		uc_false
 
 	# return false
-	movl	$1, %eax
+	movq	$1, %rax
 	jmp		uc_true
 uc_false:
 	# return true
-	movl	$0, %eax
+	movq	$0, %rax
 uc_true:
 	popq	%rbp
 	ret
