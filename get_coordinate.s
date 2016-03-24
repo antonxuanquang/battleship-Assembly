@@ -191,13 +191,13 @@ generate_random_input:
 
 #	input[0] = (char) ((int)'A' + rand()%10);
 	call	rand
-	and		$10, %rax
+	and		$9, %rax
 	addl	$65, %eax
 	movb	%al, -16(%rbp)
 
 #	input[1] = (char) ((int)'0' + rand()%10);
 	call	rand
-	and		$10, %rax
+	and		$9, %rax
 	addl	$48, %eax
 	movb	%al, -15(%rbp)
 
