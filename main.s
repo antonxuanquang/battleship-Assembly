@@ -50,6 +50,7 @@ msg_computer_board:
 	.lcomm player_board, 100 	#data structure for player_board
 	.lcomm computer_board, 100	#data structure for computer_board
 	.lcomm user_name, 20
+	.lcomm shoot, 8
 
 
 
@@ -68,16 +69,10 @@ main:
 	subq	$16, %rsp
 
 	movl	$0, -4(%rbp)
-	movl	$0, -8(%rbp)
+	movq	$0, %r15
 
 # 	begin();
 	call	begin
-
-
-# 	char* shoot = malloc(2);
-	movq	$2, %rdi
-	call	malloc
-	movq	%rax, -16(%rbp)		# shoot
 
 # 	printf("Let's create some ships\n\n\n");
 	movq	$msg_begin, %rdi
@@ -135,7 +130,7 @@ main_you_shoot:
 main_get_cooridate:
 # 	get_coordinate(shoot, 2, computer_turn);
 	movl	-4(%rbp), %edx
-	movq	-16(%rbp), %rdi
+	movq	$shoot, %rdi
 	movq	$2, %rsi
 	call	get_coordinate
 
@@ -144,15 +139,15 @@ main_get_cooridate:
 	je		main_prompt_after_shoot
 
 	# printf("%s...\n\n%s", shoot, shoot);
-	movq	-16(%rbp), %rdx
-	movq	-16(%rbp), %rsi
+	movq	$shoot, %rdx
+	movq	$shoot, %rsi
 	movq	$msg_computer_coordinate, %rdi
 	movq	$0, %rax
 	call	printf
 	jmp		main_check_sink
 
 main_prompt_after_shoot:
-	movq	-16(%rbp), %rsi
+	movq	$shoot, %rsi
 	movq	$msg_you_coordinate, %rdi
 	movq	$0, %rax
 	call	printf
@@ -165,17 +160,17 @@ main_check_sink:
 
 # 	sink = shoot_a_board(shoot, player_board);	
 	movq	$player_board, %rsi
-	movq	-16(%rbp), %rdi
+	movq	$shoot, %rdi
 	call	shoot_a_board
-	movl	%eax, -8(%rbp) 			# sink
+	movq	%rax, %r15 			# sink
 	jmp	main_loop_end
 
 # 	sink = shoot_a_board(shoot, computer_board);
 main_shoot_computer_board:
 	movq 	$computer_board, %rsi
-	movq	-16(%rbp), %rdi
+	movq	$shoot, %rdi
 	call	shoot_a_board
-	movl	%eax, -8(%rbp) 			# sink
+	movq	%rax, %r15 			# sink
 
 main_loop_end:
 # 	computer_turn = !computer_turn;
@@ -188,7 +183,7 @@ main_loop_end:
 	call	clear_screen
 
 # 	} while (!sink);
-	cmpl	$0, -8(%rbp)
+	cmpq	$0, %r15
 	je		main_loop
 
 # 	if (computer_turn) 		printf("%s\n", "Congratulations!!!! You won");
@@ -223,10 +218,6 @@ main_end:
 	movq	$player_board, %rsi
 	movq 	$computer_board, %rdi
 	call	show_board
-
-# 	free(shoot);
-	movq	-16(%rbp), %rdi
-	call	free
 
 # 	return (EXIT_SUCCESS);	
 	movq	$0, %rax
