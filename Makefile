@@ -24,7 +24,7 @@ OBJS =	main.o \
 	begin.o \
 	create_board.o \
 	create_ship.o \
-	show_board2.o \
+	show_board.o \
 	get_coordinate.o \
 	generate_possible_positions.o \
 	get_end_coordinate.o \

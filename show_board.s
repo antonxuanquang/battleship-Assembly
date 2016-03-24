@@ -6,7 +6,7 @@
 ##############################################
 .equ DOT,   0x2E      # character '.'
 .equ HIT,   0x58      # character 'X'
-.equ MISS,  0x5F      # character 'o'
+.equ MISS,  0x6F      # character 'o'
 #.equ LETTERA,	0x41	#character 'A'
 
 
@@ -132,12 +132,13 @@ show_board:
         syscall
 
 
-	movq 	$1, %r14	#row counter
+	movq 	$0, %r14	#row counter
 	movq	$0, %r15	#array counter
-	movq	$1, %rbx
+	
 #print 	rownumber
 rownum:
-	movq    $newline, %rdi
+	movq   $0, %rbx
+    movq    $newline, %rdi
         movq    $0, %rax
         call    printf
 
@@ -156,7 +157,7 @@ arylp:
 	incq	%rbx
 	cmp	$99, %r15
 	jg	half
-	cmp    $10, %rbx
+	cmp    $9, %rbx
         jle	arylp
 
 nextrow:
@@ -180,11 +181,12 @@ half:
         mov     $22, %rdx
         syscall
 
-	movq    $1, %r14        #row counter
+	movq    $0, %r14        #row counter
         movq    $0, %r15        #array counter
-        movq    $1, %rbx
+        
 #print  rownumber
 rownum2:
+        movq    $0, %rbx
         movq    $newline, %rdi
         movq    $0, %rax
         call    printf
@@ -195,22 +197,22 @@ rownum2:
         call  	printf
 #proceed to print values of array in row
 loop:
-        movq    (%r12, %r15, 1), %rcx
+        movq    (%r13, %r15, 1), %rcx
 	movq	%rcx, %rdi
 	call 	upper_case
 	cmp	$0, %rax
-	jne	else
+	je	else
 	movq	$DOT, %rsi
         movq    $fmt_char, %rdi
         movq    $0, %rax
         call    printf
 	jmp	endlp
 else:
+    cmpb $MISS, (%r13, %r15, 1)
+    je  else2
 	movq	%rcx, %rdi
 	call	lower_case
-	cmp	$0, %rax
-	jne	else2
-	cmp	$MISS, %rcx
+	testq   %rax, %rax
 	je	else2
 	movq    $HIT, %rsi
         movq    $fmt_char, %rdi
@@ -227,13 +229,15 @@ endlp:
         incq    %rbx
         cmp    $99, %r15
         jg      done
-        cmp    $10, %rbx
+        cmp    $9, %rbx
         jle     loop
 nextrow2:
         incq    %r14
         jmp     rownum2
 
-done:
+done:   
+        movq    $newline, %rdi
+        call    puts
        	popq 	%rbp
 	ret
 

@@ -49,6 +49,7 @@ msg_computer_board:
 .bss
 	.lcomm player_board, 100 	#data structure for player_board
 	.lcomm computer_board, 100	#data structure for computer_board
+	.lcomm user_name, 20
 
 
 
@@ -59,6 +60,7 @@ msg_computer_board:
 ###############################################
 	.text
 	.globl	main
+	.globl	user_name
 	.type	main, @function
 main:
 	pushq	%rbp

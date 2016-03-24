@@ -39,6 +39,7 @@ clear_screen:
 	call 	puts
 
 	call getchar
+	call getchar
 	
 	movq	$msg_2, %rdi
 	call system
