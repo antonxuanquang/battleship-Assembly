@@ -70,25 +70,20 @@ validate_input:
 #	char input[20];
 #	do {
 #		scanf("%s", input);
-	leaq	-32(%rbp), %rax
-	movq	%rax, %rsi
-	movl	$msg_s, %edi
+	leaq	-32(%rbp), %rsi
+	movq	$msg_s, %rdi
 	movq	$0, %rax
-	call	__isoc99_scanf
-	leaq	-32(%rbp), %rax
+	call	scanf
 #	} while (!is_valid(input));
-	movq	%rax, %rdi
+	leaq	-32(%rbp), %rdi
 	call	is_valid
-	testl	%eax, %eax
+	testq	%rax, %rax
 	je		validate_input
 
 #	strncpy(result, input, size);
-	movl	-44(%rbp), %eax
-	movslq	%eax, %rdx
-	leaq	-32(%rbp), %rcx
-	movq	-40(%rbp), %rax
-	movq	%rcx, %rsi
-	movq	%rax, %rdi
+	movl	-44(%rbp), %edx
+	leaq	-32(%rbp), %rsi
+	movq	-40(%rbp), %rdi
 	call	strncpy
 
 	addq 	$48, %rsp
@@ -127,16 +122,14 @@ is_valid:
 #	int first = (int)input[0] - (int)'A';
 	movq	-24(%rbp), %rax
 	movzbl	(%rax), %eax
-	movsbl	%al, %eax
-	subl	$65, %eax
+	subq	$65, %rax
 	movl	%eax, -4(%rbp)
 
 #	int second = (int)input[1] - (int)'0';
 	movq	-24(%rbp), %rax
 	addq	$1, %rax
 	movzbl	(%rax), %eax
-	movsbl	%al, %eax
-	subl	$48, %eax
+	subq	$48, %rax
 	movl	%eax, -8(%rbp)
 
 #	if (first >= 0 && first < 10 && second >= 0 && second < 10) {
@@ -192,22 +185,19 @@ generate_random_input:
 #	input[0] = (char) ((int)'A' + rand()%10);
 	call	rand
 	and		$9, %rax
-	addl	$65, %eax
+	addq	$65, %rax
 	movb	%al, -16(%rbp)
 
 #	input[1] = (char) ((int)'0' + rand()%10);
 	call	rand
 	and		$9, %rax
-	addl	$48, %eax
+	addq	$48, %rax
 	movb	%al, -15(%rbp)
 
 #	strncpy(result, input, size);
-	movl	-28(%rbp), %eax
-	movslq	%eax, %rdx
-	leaq	-16(%rbp), %rcx
-	movq	-24(%rbp), %rax
-	movq	%rcx, %rsi
-	movq	%rax, %rdi
+	movl	-28(%rbp), %edx
+	leaq	-16(%rbp), %rsi
+	movq	-24(%rbp), %rdi
 	call	strncpy
 
 	leave	

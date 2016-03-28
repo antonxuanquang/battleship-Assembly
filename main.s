@@ -66,7 +66,7 @@ msg_computer_board:
 main:
 	pushq	%rbp
 	movq	%rsp, %rbp
-	subq	$16, %rsp
+	subq	$4, %rsp
 
 	movl	$0, -4(%rbp)
 	movq	$0, %r15

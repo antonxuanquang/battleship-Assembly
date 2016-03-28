@@ -7,7 +7,6 @@
 .equ DOT,   0x2E      # character '.'
 .equ HIT,   0x58      # character 'X'
 .equ MISS,  0x6F      # character 'o'
-#.equ LETTERA,	0x41	#character 'A'
 
 
 
@@ -238,7 +237,7 @@ nextrow2:
 done:   
         movq    $newline, %rdi
         call    puts
-       	popq 	%rbp
+    leave
 	ret
 
 
