@@ -22,11 +22,11 @@
 msg_begin:
 	.string	"Let's create some ships\n\n"
 msg_battle_begin:
-	.string	"The battle begin\n\n"
+	.string	"Let the battle begin\n\n"
 msg_computer_shoot:
-	.string	"Computer shoot you at: "
+	.string	"Computer shoots you at: "
 msg_you_shoot:
-	.string	"%s shoot at: "
+	.string	"%s shoots at: "
 msg_computer_coordinate:
 	.string	"%s...\n\n%s"
 msg_you_coordinate:
@@ -74,6 +74,9 @@ main:
 
 # 	begin();
 	call	begin
+	
+#	get_name()
+	call 	get_name
 
 # 	printf("Let's create some ships\n\n\n");
 	movq	$msg_begin, %rdi
