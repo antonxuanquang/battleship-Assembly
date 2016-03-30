@@ -22,6 +22,7 @@ RM = /bin/rm
 RMFLAGS= -f
 OBJS =	main.o \
 	begin.o \
+	get_name.o \
 	create_board.o \
 	create_ship.o \
 	show_board.o \
