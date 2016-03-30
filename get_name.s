@@ -23,6 +23,7 @@ get_name:
         pushq   %rbp
         movq    %rsp, %rbp
 
+        # calls scanf to get user_name
         mov     $user_name, %rax
         mov     %rax, %rsi
         mov     $fmt_string, %rdi
