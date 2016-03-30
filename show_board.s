@@ -9,7 +9,6 @@
 .equ MISS,  0x6F      # character 'o'
 
 
-
 ###############################################
 #
 # READ ONLY SECTION
@@ -28,18 +27,6 @@ fmt_string:     .string "%s"
 fmt_charint:    .string "%c%d"
 
 
-
-
-###############################################
-#
-# Data Section
-#
-###############################################
-        .section .data
-outputfmt:	.string "%c\n"
-charA: 	.byte 'A'
-
-
 ###############################################
 #
 # Text (Code) Segment
@@ -51,62 +38,7 @@ charA: 	.byte 'A'
 
 
 ##############################################
-#
-# void show_board(char player_board[10][10], char computer_board[10][10]) {
-#	int row, column;
-#
-#	printf("%s\n", "SHIP BOARDS");
-#
-#	// print A B C D ...
-#	for (row = 'A'; row <= 'J'; row++) {
-#		printf("\t");
-#		printf("%c", row);
-#	}
-#	printf("\n");
-#
-#	// print board
-#	for (row = 0; row < 10; row++) {
-#		printf("%d", row);
-#		for (column = 0; column < 10; column++) {
-#			printf("\t");
-#			printf("%c", player_board[row][column]);
-#		}
-#		printf("\n");
-#	}
-#	printf("\n");
-#	printf("\n");
-#
-#
-#
-#	printf("%s\n", "SHOT BOARDS");
-#
-#	// print A B C D ...
-#	for (row = 'A'; row <= 'J'; row++) {
-#		printf("\t");
-#		printf("%c", row);
-#	}
-#	printf("\n");
-#
-#	// print board
-#	for (row = 0; row < 10; row++) {
-#		printf("%d", row);
-#		for (column = 0; column < 10; column++) {
-#			printf("\t");
-#			char character = computer_board[row][column];
-#			if 		(upper_case(character))
-#				printf("%c", '.');
-#			else if (lower_case(character) && character != 'o')
-#				printf("%c", 'X');
-#			else
-#				printf("%c", character);
-#		}
-#		printf("\n");
-#	}
-#	printf("\n");
-#	printf("\n");
-# }
-#
-##############################################
+# void show_board(char player_board[10][10], char computer_board[10][10])
 
 
 show_board:
@@ -117,7 +49,7 @@ show_board:
 	movq 	%rdi, %r12	#move player_board to %r12
 	movq	%rsi, %r13	#move computer_board to %r13
 
-#print tile Ships Board
+#print title Ships Board
 	movq 	$1, %rax
         movq 	$1, %rdi
         mov 	$msg1, %rsi
@@ -131,20 +63,25 @@ show_board:
         syscall
 
 
-	movq 	$0, %r14	#row counter
-	movq	$0, %r15	#array counter
+	movq 	$0, %r14	#row output counter
+	movq	$0, %r15	#position in array counter
 	
 #print 	rownumber
 rownum:
-	movq   $0, %rbx
-    movq    $newline, %rdi
+	# resets to zero
+	movq   	$0, %rbx
+	
+	# prints balnk line
+	movq    $newline, %rdi
         movq    $0, %rax
         call    printf
 
+	# prints the correct row lnumber label 
 	movq 	%r14, %rsi
 	movq	$fmt_int, %rdi
 	movq 	$0, %rax
 	call 	printf
+	
 #proceed to print values of array in row
 arylp:
 	movq    (%r12, %r15, 1), %rsi
@@ -152,6 +89,7 @@ arylp:
         movq    $0, %rax
         call    printf
 
+	# increments the array counter to go to the next index/ elements of the array
 	incq	%r15
 	incq	%rbx
 	cmp	$99, %r15
@@ -162,6 +100,7 @@ arylp:
 nextrow:
 	incq	%r14
 	jmp	rownum
+
 
 half:
 	movq    $newline, %rdi
@@ -207,8 +146,8 @@ loop:
         call    printf
 	jmp	endlp
 else:
-    cmpb $MISS, (%r13, %r15, 1)
-    je  else2
+    	cmpb $MISS, (%r13, %r15, 1)
+    	je  else2
 	movq	%rcx, %rdi
 	call	lower_case
 	testq   %rax, %rax
@@ -237,18 +176,8 @@ nextrow2:
 done:   
         movq    $newline, %rdi
         call    puts
-    leave
+	
+	leave
 	ret
 
-
-#how to compare letter with value of array (after copy to register)
-
-
-##mov space eax
-##mov board ebx
-##mov counter ecx
-##mov al, (rbx, rcx)
-##loop last line
-##leave
-##ret
 
