@@ -20,27 +20,19 @@ msg_2:
 
 
 ###############################################
-#
-# void clear_screen() {
-#	printf("Press [[ENTER]] to continue\n");
-#	getchar();
-#	getchar();
-#	system("clear");
-# }
-#
-###############################################
-
-
 clear_screen:
 	pushq   %rbp
 	movq    %rsp, %rbp
 
-	movl	$msg_1, %edi
+	# outputs "Please press [ENTER] to continue"
+	movq	$msg_1, %rdi
 	call 	puts
 
+	# waits
 	call getchar
 	call getchar
 	
+	# calls system clear
 	movq	$msg_2, %rdi
 	call system
 
