@@ -33,6 +33,7 @@ OBJS =	main.o \
 	upper_case.o \
 	lower_case.o \
 	shoot_a_board.o \
+	print_stat.o \
 	clear_screen.o
 
 EXE= battleship

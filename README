@@ -1,0 +1,17 @@
+Authors: Kaitlin Hendrick, Quang Nguyen
+Course: Computer System Fundamental
+Date: March 29th, 2016
+
+Battleship Program
+
+This is a battleship program that let a player play against computer in battleship.
+Player has to guess the computer's ships locations. The game is over whenever one player
+sink opponent's battleship.
+
+Game flow:
+1. The player starts by enter his/her name.
+2. The player then input coordinates to place 5 different ships into his/her game board.
+3. The game phase: the player and computer take turns trying to sink other's ships.
+4. Printing out results and statistic.
+
+

@@ -39,6 +39,10 @@ msg_your_board:
 	.string	"%s's game board\n\n"
 msg_computer_board:
 	.string	"Computer's game board\n"
+msg_s:
+	.string "%s:\n"
+msg_computer:
+	.string "Computer:\n"
 
 
 
@@ -214,19 +218,36 @@ main_end:
 	movq	$0, %rax
 	call	printf
 
+
 # 	show_board(player_board, computer_board);
 	movq 	$computer_board, %rsi
 	movq	$player_board, %rdi
 	call	show_board
+
+	movq 	$msg_s, %rdi
+	movq 	$user_name, %rsi
+	movq 	$0, %rax
+	call 	printf
+
+	movq 	$computer_board, %rdi
+	call 	print_stat
 
 # 	printf("Computer's game board\n");
 	movq	$msg_computer_board, %rdi
 	call	puts
 
 # 	show_board(computer_board, player_board);
+	
 	movq	$player_board, %rsi
 	movq 	$computer_board, %rdi
 	call	show_board
+
+	movq 	$msg_computer, %rdi
+	movq 	$0, %rax
+	call 	printf
+
+	movq 	$player_board, %rdi
+	call 	print_stat
 
 # 	return (EXIT_SUCCESS);	
 	movq	$0, %rax

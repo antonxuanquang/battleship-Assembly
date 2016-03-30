@@ -174,32 +174,7 @@ cs_inside_loop:
 	movzbl 	(%rdx, %rcx), %eax
 	movb	%al, -9(%rbp)
 
-# 	if (point != '.' && point != 'X' && point != 'o'
-# 		&& !strchr(sum_string, point)
-# 		&& upper_case(point)) {
-	# if (point == 'b')
-	# # point != '.'
-	# cmpb	$46, -9(%rbp)
-	# je		cs_inside_increment
-	# # point != 'X'
-	# cmpb	$88, -9(%rbp)
-	# je		cs_inside_increment
-	# # point != 'o'
-	# cmpb	$111, -9(%rbp)
-	# je		cs_inside_increment
-	# # !strchr(sum_string, point)
-	# movsbl	-9(%rbp), %esi
-	# leaq	-48(%rbp), %rdi
-	# call	strchr
-	# testq	%rax, %rax
-	# jne		cs_inside_increment
-
-	# # upper_case(point)
-	# movsbl	-9(%rbp), %edi
-	# call	upper_case
-	# testl	%eax, %eax
-	# je		cs_inside_increment
-
+# 	if (point == 'b')
 	cmpb 	$66, -9(%rbp)
 	jne		cs_inside_increment
 
