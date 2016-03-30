@@ -11,7 +11,7 @@ msg_retry:
 msg_option_counter:
 	.string	">%d: %s\n"
 msg_prompt_end:
-	.string	"Please input end position: "
+	.string	"%s, please input end position: "
 msg_s:
 	.string	"%s"
 msg_d:
@@ -214,10 +214,10 @@ pfep_loop_condition:
 	call	free
 
 pfep_while_loop:
-# 	printf("%s", "Please input end position: ");
-	movl	$msg_prompt_end, %esi
-	movl	$msg_s, %edi
-	movl	$0, %eax
+# 	printf("%s, please input end position: , user_name);
+	movq	$user_name, %rsi
+	movq	$msg_prompt_end, %rdi
+	movq	$0, %rax
 	call	printf
 
 # 	scanf("%d", &choice_int);
