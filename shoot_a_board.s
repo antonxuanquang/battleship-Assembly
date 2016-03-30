@@ -177,27 +177,31 @@ cs_inside_loop:
 # 	if (point != '.' && point != 'X' && point != 'o'
 # 		&& !strchr(sum_string, point)
 # 		&& upper_case(point)) {
-	# point != '.'
-	cmpb	$46, -9(%rbp)
-	je		cs_inside_increment
-	# point != 'X'
-	cmpb	$88, -9(%rbp)
-	je		cs_inside_increment
-	# point != 'o'
-	cmpb	$111, -9(%rbp)
-	je		cs_inside_increment
-	# !strchr(sum_string, point)
-	movsbl	-9(%rbp), %esi
-	leaq	-48(%rbp), %rdi
-	call	strchr
-	testq	%rax, %rax
-	jne		cs_inside_increment
+	# if (point == 'b')
+	# # point != '.'
+	# cmpb	$46, -9(%rbp)
+	# je		cs_inside_increment
+	# # point != 'X'
+	# cmpb	$88, -9(%rbp)
+	# je		cs_inside_increment
+	# # point != 'o'
+	# cmpb	$111, -9(%rbp)
+	# je		cs_inside_increment
+	# # !strchr(sum_string, point)
+	# movsbl	-9(%rbp), %esi
+	# leaq	-48(%rbp), %rdi
+	# call	strchr
+	# testq	%rax, %rax
+	# jne		cs_inside_increment
 
-	# upper_case(point)
-	movsbl	-9(%rbp), %edi
-	call	upper_case
-	testl	%eax, %eax
-	je		cs_inside_increment
+	# # upper_case(point)
+	# movsbl	-9(%rbp), %edi
+	# call	upper_case
+	# testl	%eax, %eax
+	# je		cs_inside_increment
+
+	cmpb 	$66, -9(%rbp)
+	jne		cs_inside_increment
 
 # 	int length = strlen(sum_string);	
 	leaq	-48(%rbp), %rdi
@@ -233,12 +237,12 @@ cs_outside_condition:
 	cmpl	$9, -4(%rbp)
 	jle		cs_outside_loop
 
-# 	return strlen(sum_string) < 5;
+# 	return strlen(sum_string) == 0;
 	# strlen(sum_string)
 	leaq	-48(%rbp), %rdi
 	call	strlen
-	cmpq	$4, %rax
-	setbe	%al
+	cmpq	$0, %rax
+	sete	%al
 	movzbl	%al, %eax
 
 	leave

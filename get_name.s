@@ -5,6 +5,7 @@
 ##############################################
         .section        .rodata
 fmt_string: .string "%s"
+fmt_prompt: .string "Enter your name: "
 
 ###############################################
 #
@@ -24,6 +25,10 @@ get_name:
         movq    %rsp, %rbp
 
         # calls scanf to get user_name
+        movq    $fmt_prompt, %rdi
+        movq    $0, %rax
+        call    printf
+
         mov     $user_name, %rax
         mov     %rax, %rsi
         mov     $fmt_string, %rdi

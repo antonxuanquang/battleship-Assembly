@@ -32,13 +32,13 @@ msg_computer_coordinate:
 msg_you_coordinate:
 	.string	"\n%s"
 msg_you_won:
-	.string	"Congratulations!!!! %s won"
+	.string	"Congratulations!!!! %s won\n"
 msg_computer_won:
 	.string	"Computer won"
 msg_your_board:
-	.string	"%s's game board"
+	.string	"%s's game board\n\n"
 msg_computer_board:
-	.string	"Computer's game board"
+	.string	"Computer's game board\n"
 
 
 
@@ -48,10 +48,10 @@ msg_computer_board:
 #
 ###############################################
 .bss
-	.lcomm player_board, 100 	#data structure for player_board
-	.lcomm computer_board, 100	#data structure for computer_board
-	.lcomm user_name, 16		#username 
-	.lcomm shoot, 8
+	.comm player_board, 100 	#data structure for player_board
+	.comm computer_board, 100	#data structure for computer_board
+	.comm user_name, 16		#username 
+	.comm shoot, 8
 
 
 
