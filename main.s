@@ -2,9 +2,10 @@
 #
 # BATTLESHIP
 #
-# KAitlin Hendrick
+# Kaitlin Hendrick
+# Quang Nguyen
 #
-# 03/03/16
+# 03/29/16
 #
 #########################################
 
@@ -25,17 +26,17 @@ msg_battle_begin:
 msg_computer_shoot:
 	.string	"Computer shoot you at: "
 msg_you_shoot:
-	.string	"You shoot at: "
+	.string	"%s shoot at: "
 msg_computer_coordinate:
 	.string	"%s...\n\n%s"
 msg_you_coordinate:
 	.string	"\n%s"
 msg_you_won:
-	.string	"Congratulations!!!! You won"
+	.string	"Congratulations!!!! %s won"
 msg_computer_won:
 	.string	"Computer won"
 msg_your_board:
-	.string	"Your game board"
+	.string	"%s's game board"
 msg_computer_board:
 	.string	"Computer's game board"
 
@@ -49,7 +50,7 @@ msg_computer_board:
 .bss
 	.lcomm player_board, 100 	#data structure for player_board
 	.lcomm computer_board, 100	#data structure for computer_board
-	.lcomm user_name, 20
+	.lcomm user_name, 16		#username 
 	.lcomm shoot, 8
 
 
@@ -123,6 +124,7 @@ main_loop:
 
 # 	else 				printf("You shoot at: ");
 main_you_shoot:
+	movq	$user_name, %rsi
 	movq	$msg_you_shoot, %rdi
 	movq	$0, %rax
 	call	printf
@@ -190,8 +192,10 @@ main_loop_end:
 	cmpl	$0, -4(%rbp)
 	je		main_computer_won
 	# printf("%s\n", "Congratulations!!!! You won");
+	movq	$user_name, %rsi
 	movq	$msg_you_won, %rdi
-	call	puts
+	movq	$0, %rax
+	call	printf
 	jmp		main_end
 
 main_computer_won:
@@ -202,8 +206,10 @@ main_computer_won:
 
 main_end:
 # 	printf("Your game board\n");
+	movq	$user_name, %rsi
 	movq	$msg_your_board, %rdi
-	call	puts
+	movq	$0, %rax
+	call	printf
 
 # 	show_board(player_board, computer_board);
 	movq 	$computer_board, %rsi
