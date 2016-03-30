@@ -16,7 +16,7 @@ msg_Submarine:
 msg_Destroyer:
 	.string	"You are creating a Destroyer\n"
 msg_Input:
-	.string	"Please input a start coordinate: "
+	.string	"%s, please input a start coordinate: "
 msg_s:
 	.string "%s"
 
@@ -185,11 +185,11 @@ get_positions:
 	movq	%rax, %rdi
 	call	memset
 
-#	if (!computer_turn) printf("%s", "Please input a start coordinate: ");
+#	if (!computer_turn) printf("%s, please input a start coordinate: ", user_name);
 	cmpl	$0, -60(%rbp)
 	jne		get_positions2
-	movq	$msg_Input, %rsi
-	movq	$msg_s, %rdi
+	movq	$user_name, %rsi
+	movq	$msg_Input, %rdi
 	movq	$0, %rax
 	call	printf
 
